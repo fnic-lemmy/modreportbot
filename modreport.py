@@ -70,7 +70,7 @@ def run(user, pw, instance, room, muser, mpw, mserver, live):
       rtxt = f'Report: {report["comment_report"]["reason"]}\n'
       rtxt += f'Community: {report["community"]["name"]}\n'
       rtxt += f'Comment: {report["comment"]["content"]}\n'
-      rtxt += f'Replies: {report["counts"]["child_count"]} {report["counts"]["upvotes"]} {report["counts"]["downvotes"]}\n'
+      rtxt += f'Replies: {report["counts"]["child_count"]} 👍{report["counts"]["upvotes"]} 👎{report["counts"]["downvotes"]}\n'
 
       print(rtxt)
       if live:
