@@ -51,7 +51,7 @@ on:
     branches: [ "main" ]
 
 env:
-  PROJECT_ID: bots-424808 # TODO: update Google Cloud project id
+  PROJECT_ID: fnic-2024 # TODO: update Google Cloud project id
   SERVICE: modreportbot # TODO: update Cloud Run service name
   REGION: europe-west1 # TODO: update Cloud Run service region
 
