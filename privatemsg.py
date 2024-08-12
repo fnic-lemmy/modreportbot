@@ -15,7 +15,17 @@ def run(lemmy, live, room, muser, mpw, mserver):
     return
 
   for p in pms['private_messages']:
-    rtxt = f"From: {p['creator']['display_name']} <{p['creator']['actor_id']}>\nTo: {p['recipient']['display_name']} <{p['recipient']['actor_id']}>\n{p['private_message']['content']}\n"
+    if 'display_name' in p['creator']:
+      dm_from = p['creator']['display_name']
+    else:
+      dm_from = p['creator']['name']
+
+    if 'display_name' in p['recipient']:
+      dm_to = p['recipient']['display_name']
+    else:
+      dm_to = p['recipient']['name']
+
+    rtxt = f"From: {dm_from} <{p['creator']['actor_id']}>\nTo: {dm_to} <{p['recipient']['actor_id']}>\n{p['private_message']['content']}\n"
     print(rtxt)
 
     if live:
