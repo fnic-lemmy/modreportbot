@@ -14,3 +14,6 @@ gc_deploy "dbzer0" "lemmy.dbzer0.com"
 gc_deploy "lemm-ee" "lemm.ee"
 gc_deploy "sffa" "sffa.community"
 gc_deploy "lemmy-world" "lemmy.world"
+
+wait
+
