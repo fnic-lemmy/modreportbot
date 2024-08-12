@@ -4,6 +4,7 @@ import requests
 import json
 import sys
 import string
+import re
 import matrix
 from pythorhead import Lemmy
 
@@ -20,12 +21,28 @@ def run(lemmy, live, room, muser, mpw, mserver):
     else:
       dm_from = p['creator']['name']
 
+    g = re.search(r'https://(.*)/u/(.*)', p['creator']['actor_id'])
+    if g is not None:
+      from_inst = g.group(1)
+      from_user = g.group(2)
+      dm_from_addr = f'@{from_user}@{from_inst}'
+    else:
+      dm_from_addr = p['creator']['actor_id']
+
     if 'display_name' in p['recipient']:
       dm_to = p['recipient']['display_name']
     else:
       dm_to = p['recipient']['name']
 
-    rtxt = f"From: {dm_from} <{p['creator']['actor_id']}>\nTo: {dm_to} <{p['recipient']['actor_id']}>\n{p['private_message']['content']}\n"
+    g = re.search(r'https://(.*)/u/(.*)', p['recipient']['actor_id'])
+    if g is not None:
+      to_inst = g.group(1)
+      to_user = g.group(2)
+      dm_to_addr = f'@{to_user}@{to_inst}'
+    else:
+      dm_to_addr = p['recipient']['actor_id']
+
+    rtxt = f"From: {dm_from} <{dm_from_addr}>\nTo: {dm_to} <{dm_to_addr}>\n{p['private_message']['content']}\n"
     print(rtxt)
 
     if live:
