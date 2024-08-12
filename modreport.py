@@ -9,7 +9,7 @@ import downvotes
 import privatemsg
 from pythorhead import Lemmy
 
-def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, live):
+def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, live):
   posted_reports = { }
   posted_reports["posts"] = []
   posted_reports["comments"] = []
@@ -37,6 +37,10 @@ def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, live):
 
   if pm == "TRUE":
     privatemsg.run(lemmy, live, room, muser, mpw, mserver)
+
+  if reports != "TRUE":
+    # not getting reports so nothing more to do
+    return
 
   try:
     reports = lemmy.post.report_list(unresolved_only = "true")
