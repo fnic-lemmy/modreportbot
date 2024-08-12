@@ -6,9 +6,10 @@ import string
 import firestore
 import matrix
 import downvotes
+import privatemsg
 from pythorhead import Lemmy
 
-def run(user, pw, instance, room, muser, mpw, mserver, dv, live):
+def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, live):
   posted_reports = { }
   posted_reports["posts"] = []
   posted_reports["comments"] = []
@@ -33,6 +34,9 @@ def run(user, pw, instance, room, muser, mpw, mserver, dv, live):
 
   if dv == "TRUE":
     downvotes.run(lemmy, live)
+
+  if pm == "TRUE":
+    privatemsg.run(lemmy, live, room, muser, mpw, mserver)
 
   try:
     reports = lemmy.post.report_list(unresolved_only = "true")

@@ -14,16 +14,17 @@ MATRIXUSER = os.getenv("MATRIX_USER", 0)
 MATRIXPW = os.getenv("MATRIX_PW", 0)
 MATRIXSERVER = os.getenv("MATRIX_SERVER", 0)
 DOWNVOTES = os.getenv("FLAG_DOWNVOTES", 0)
+PRIVATEMESSAGES = os.getenv("GET_MESSAGES", 0)
 
-def main(user, pw, inst, room, muser, mpw, mserver, dv):
+def main(user, pw, inst, room, muser, mpw, mserver, dv, pm):
 
-    modreport.run(user, pw, inst, room, muser, mpw, mserver, dv, True)
+    modreport.run(user, pw, inst, room, muser, mpw, mserver, dv, pm, True)
     return "modreportbot"
 
 # Start script
 if __name__ == "__main__":
     try:
-        main(BOTUSER, BOTPW, BOTINSTANCE, MATRIXROOM, MATRIXUSER, MATRIXPW, MATRIXSERVER, DOWNVOTES)
+        main(BOTUSER, BOTPW, BOTINSTANCE, MATRIXROOM, MATRIXUSER, MATRIXPW, MATRIXSERVER, DOWNVOTES, PRIVATEMESSAGES)
     except Exception as err:
         message = (
             f"Task #{TASK_INDEX}, " + f"Attempt #{TASK_ATTEMPT} failed: {str(err)}"
