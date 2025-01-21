@@ -22,7 +22,7 @@ def run(lemmy, live, room, muser, mpw, mserver):
 
     if live:
       # post to matrix
-      mtxt = f'New: [{p["community"]["name"]}] {p["post"]["name"]}'
+      mtxt = f"New: [{p['community']['name']}] {p['post']['name']}\n{p['post']['id']"
       matrix.post(mtxt, room, muser, mpw, mserver)
 
       try:
