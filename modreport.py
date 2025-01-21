@@ -7,9 +7,10 @@ import firestore
 import matrix
 import downvotes
 import privatemsg
+import newposts
 from pythorhead import Lemmy
 
-def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, live):
+def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, np, live):
   posted_reports = { }
   posted_reports["posts"] = []
   posted_reports["comments"] = []
@@ -31,6 +32,9 @@ def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, live):
   except Exception as e:
     print(f'login failed: {e}\n')
     sys.exit(1)
+
+  if np == "TRUE":
+    newposts.run(lemmy, live, room, muser, mpw, mserver)
 
   if dv == "TRUE":
     downvotes.run(lemmy, live)
