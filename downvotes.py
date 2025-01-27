@@ -18,7 +18,7 @@ def run(lemmy, live):
   posts = mposts
 
   for p in posts:
-    if p["hidden"] is True:
+    if ('hidden' not in p) or (p['hidden'] is True):
       break
 
     if p['counts']['score'] < threshold:
