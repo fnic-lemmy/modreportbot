@@ -8,6 +8,7 @@ import matrix
 import downvotes
 import privatemsg
 import newposts
+import modlog
 from pythorhead import Lemmy
 
 def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, np, ml, ml_pm, live):
