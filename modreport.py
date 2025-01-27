@@ -46,7 +46,7 @@ def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, np, ml, 
   if ml == "TRUE":
     if ml_pm == "TRUE":
       pm_modlogs = True
-    else
+    else:
       pm_modlogs = False
     modlog.run(lemmy, user, instance, live, room, muser, mpw, mserver, pm_modlogs)
 
