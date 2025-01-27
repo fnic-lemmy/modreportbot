@@ -9,6 +9,10 @@ from pythorhead.types import ModlogActionType,ListingType
 def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
   processed_modlogs = {}
   processed_modlogs['removed_posts'] = []
+
+  available_communities = {}
+  available_communities['removed_posts'] = []
+
   doc = f'{l_user}.{l_inst}'
   if live:
     processed_modlogs = firestore.get("modlogs", doc)
@@ -16,6 +20,13 @@ def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
     processed_modlogs = {}
   if 'removed_posts' not in processed_modlogs:
     processed_modlogs['removed_posts'] = []
+
+  if live:
+    available_communities = firestore.get("modlog_communities", doc)
+  if available_communities is None:
+    available_communities = {}
+  if 'removed_posts' not in available_communities:
+    available_communities['removed_posts'] = []
 
   # get list of subscribed commmunities
   # NB: this should really be moderated communities
@@ -56,13 +67,19 @@ def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
         msg_to = user['person_view']['person']['name']
 
       if live:
-        processed_modlogs['removed_posts'].append(log['mod_remove_post']['id'])
-        # Post to Matrix
-        matrix.post(f'[modlog] {msg}', room, muser, mpw, mserver)
-        # Send PM to the poster
-        if pm_modlogs is True:
-          pm_msg = f"Dear {msg_to},\n\nYour post {msg}\n\nIf you are able to correct this please feel free to re-post."
-          lemmy.private_message.create(recipient_id=log['post']['creator_id'],content=pm_msg)
+        processed_modlogs['removed_posts'].append(log['mod_remove_post']['id']) # mark modlog as processed
+        if c in available_communities['removed_posts']: # only perform actions if we've seen the community before
+          # Post to Matrix
+          matrix.post(f'[modlog] {msg}', room, muser, mpw, mserver)
+          # Send PM to the poster
+          if pm_modlogs is True:
+            pm_msg = f"Dear {msg_to},\n\nYour post {msg}\n\nIf you are able to correct this please feel free to re-post."
+            lemmy.private_message.create(recipient_id=log['post']['creator_id'],content=pm_msg)
+    if live:
+      if c not in available_communities['removed_posts']: # this is a new community, we need to add it so actions happen for new logs
+        print(f'community with id {c} not seen previously, adding')
+        available_communities['removed_posts'].append(c)
 
   if live:
     firestore.set("modlogs", doc, processed_modlogs)
+    firestore.set("modlog_communities", doc, available_communities)
