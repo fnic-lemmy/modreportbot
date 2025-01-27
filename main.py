@@ -17,16 +17,18 @@ DOWNVOTES = os.getenv("FLAG_DOWNVOTES", 0)
 PRIVATEMESSAGES = os.getenv("GET_MESSAGES", 0)
 MODREPORTS = os.getenv("GET_REPORTS", 0)
 NEWPOSTS = os.getenv("NOTIFY_NEW", 0)
+MODLOG = os.getenv("GET_MODLOG", 0)
+MODLOG_PM = os.getenv("MODLOG_PM", 0)
 
-def main(user, pw, inst, room, muser, mpw, mserver, dv, pm, reports, newposts):
+def main(user, pw, inst, room, muser, mpw, mserver, dv, pm, reports, newposts, modlog, modlog_pm):
 
-    modreport.run(user, pw, inst, room, muser, mpw, mserver, dv, pm, reports, newposts, True)
+    modreport.run(user, pw, inst, room, muser, mpw, mserver, dv, pm, reports, newposts, modlog, modlog_pm, True)
     return "modreportbot"
 
 # Start script
 if __name__ == "__main__":
     try:
-        main(BOTUSER, BOTPW, BOTINSTANCE, MATRIXROOM, MATRIXUSER, MATRIXPW, MATRIXSERVER, DOWNVOTES, PRIVATEMESSAGES, MODREPORTS, NEWPOSTS)
+        main(BOTUSER, BOTPW, BOTINSTANCE, MATRIXROOM, MATRIXUSER, MATRIXPW, MATRIXSERVER, DOWNVOTES, PRIVATEMESSAGES, MODREPORTS, NEWPOSTS, MODLOG, MODLOG_PM)
     except Exception as err:
         message = (
             f"Task #{TASK_INDEX}, " + f"Attempt #{TASK_ATTEMPT} failed: {str(err)}"
