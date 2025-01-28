@@ -8,9 +8,10 @@ import matrix
 import downvotes
 import privatemsg
 import newposts
+import modlog
 from pythorhead import Lemmy
 
-def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, np, live):
+def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, np, ml, ml_pm, live):
   posted_reports = { }
   posted_reports["posts"] = []
   posted_reports["comments"] = []
@@ -41,6 +42,13 @@ def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, np, live
 
   if pm == "TRUE":
     privatemsg.run(lemmy, live, room, muser, mpw, mserver)
+
+  if ml == "TRUE":
+    if ml_pm == "TRUE":
+      pm_modlogs = True
+    else:
+      pm_modlogs = False
+    modlog.run(lemmy, user, instance, live, room, muser, mpw, mserver, pm_modlogs)
 
   if reports != "TRUE":
     # not getting reports so nothing more to do
