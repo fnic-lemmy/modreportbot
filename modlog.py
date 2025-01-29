@@ -6,7 +6,7 @@ import firestore
 from pythorhead import Lemmy
 from pythorhead.types import ModlogActionType,ListingType
 
-def removed_posts(lemmy, live, c, available_communities, room, muser, mpw, mserver):
+def removed_posts(lemmy, live, c, available_communities, processed_modlogs, room, muser, mpw, mserver):
   ml = lemmy.modlog.get(community_id=c,type_=ModlogActionType.ModRemovePost,limit=4)
   processed = []
   ppid = 0
@@ -16,7 +16,7 @@ def removed_posts(lemmy, live, c, available_communities, room, muser, mpw, mserv
       continue # skip duplicates
     ppid = log['mod_remove_post']['post_id']
 
-    if log['mod_remove_post']['id'] in processed_modlogs['removed_posts']:
+    if log['mod_remove_post']['id'] in processed_modlogs:
       break # stop processing if we've already seen a log as they are in descending order
 
     if "reason" in log['mod_remove_post']:
@@ -33,7 +33,7 @@ def removed_posts(lemmy, live, c, available_communities, room, muser, mpw, mserv
 
     if live:
       processed.append(log['mod_remove_post']['id']) # mark modlog as processed
-      if c in available_communities['removed_posts']: # only perform actions if we've seen the community before
+      if c in available_communities: # only perform actions if we've seen the community before
         # Post to Matrix
         matrix.post(f'[modlog] {msg}', room, muser, mpw, mserver)
         # Send PM to the poster
@@ -78,7 +78,7 @@ def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
 
   # Get the modlog for each community
   for c in commlist:
-    processed = removed_posts(lemmy, live, c, available_communities, room, muser, mpw, mserver)
+    processed = removed_posts(lemmy, live, c, available_communities['removed_posts'], processed_modlogs['removed_posts'], room, muser, mpw, mserver)
 
     if live:
       processed_modlogs['removed_posts'].extend(processed)
