@@ -28,17 +28,15 @@ def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
   if 'removed_posts' not in available_communities:
     available_communities['removed_posts'] = []
 
-  # get list of subscribed commmunities
-  # NB: this should really be moderated communities
-  #     but a bug prevents that from working correctly
+  # get list of moderated commmunities
   commlist = []
-  cl = lemmy.community.list(type_=ListingType.Subscribed)
-  n = 1
-  while len(cl)>0:
-    for cc in cl:
-      commlist.append(cc['community']['id'])
-    n+=1
-    cl = lemmy.community.list(type_=ListingType.Subscribed, page=n)
+  moduser = lemmy.user.get(username=l_user) # we don't need l_inst as we're logged on to that instance
+  if moduser:
+    for c in moduser['moderates']:
+      commlist.append(c['community']['id'])
+  else:
+    print(f"cannot get user {l_user}@{l_inst}")
+    return
 
   # Get the modlog for each community
   for c in commlist:
