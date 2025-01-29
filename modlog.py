@@ -6,7 +6,7 @@ import firestore
 from pythorhead import Lemmy
 from pythorhead.types import ModlogActionType,ListingType
 
-def removed_posts(lemmy, live, c, available_communities, processed_modlogs, room, muser, mpw, mserver):
+def removed_posts(lemmy, live, c, available_communities, processed_modlogs, room, muser, mpw, mserver, pm_modlogs):
   ml = lemmy.modlog.get(community_id=c,type_=ModlogActionType.ModRemovePost,limit=4)
   processed = []
   ppid = 0
@@ -78,7 +78,7 @@ def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
 
   # Get the modlog for each community
   for c in commlist:
-    processed = removed_posts(lemmy, live, c, available_communities['removed_posts'], processed_modlogs['removed_posts'], room, muser, mpw, mserver)
+    processed = removed_posts(lemmy, live, c, available_communities['removed_posts'], processed_modlogs['removed_posts'], room, muser, mpw, mserver, pm_modlogs)
 
     if live:
       processed_modlogs['removed_posts'].extend(processed)
