@@ -178,7 +178,7 @@ def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
 
     # process added mods
     # NB: Sending PMs for this action is disabled
-    processed = added_to_community(lemmy, live, c, available_communities['removed_comments'], processed_modlogs['removed_comments'], room, muser, mpw, mserver, False)
+    processed = added_to_community(lemmy, live, c, available_communities['added_to_community'], processed_modlogs['added_to_community'], room, muser, mpw, mserver, False)
 
     if live:
       processed_modlogs['added_to_community'].extend(processed)
