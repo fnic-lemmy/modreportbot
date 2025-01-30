@@ -87,6 +87,8 @@ def added_to_community(lemmy, live, c, available_communities, processed_modlogs,
   for log in ml['added_to_community']:
     if log['mod_add_community']['id'] in processed_modlogs:
       break # stop processing if we've already seen a log as they are in descending order
+    if log['mod_add_community']['removed'] is not False:
+      break # not interested in removed mods
 
     msg = f"\"{log['modded_person']['name']}\" has been added as a mod for \"{log['community']['name']}\" by \"{log['moderator']['name']}\""
     print(f"{log['mod_add_community']['id']} {msg}")
