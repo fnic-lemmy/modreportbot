@@ -88,7 +88,7 @@ def added_to_community(lemmy, live, c, available_communities, processed_modlogs,
     if log['mod_add_community']['id'] in processed_modlogs:
       break # stop processing if we've already seen a log as they are in descending order
     if log['mod_add_community']['removed'] is not False:
-      break # not interested in removed mods
+      continue # not interested in removed mods
 
     msg = f"\"{log['modded_person']['name']}\" has been added as a mod for \"{log['community']['name']}\" by \"{log['moderator']['name']}\""
     print(f"{log['mod_add_community']['id']} {msg}")
@@ -121,7 +121,7 @@ def banned_from_community(lemmy, live, c, available_communities, processed_modlo
     if log['mod_ban_from_community']['id'] in processed_modlogs:
       break # stop processing if we've already seen a log as they are in descending order
     if log['mod_ban_from_community']['banned'] is not True:
-      break # not interested in unbans
+      continue # not interested in unbans
 
     if "reason" in log['mod_ban_from_community']:
       reason = log['mod_ban_from_community']['reason']
