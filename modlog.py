@@ -236,7 +236,7 @@ def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
         available_communities['added_to_community'].append(c)
 
     # process removed comments
-    processed = removed_comments(lemmy, live, c, available_communities['banned_from_community'], processed_modlogs['banned_from_community'], room, muser, mpw, mserver, pm_modlogs)
+    processed = banned_from_community(lemmy, live, c, available_communities['banned_from_community'], processed_modlogs['banned_from_community'], room, muser, mpw, mserver, pm_modlogs)
 
     if live:
       processed_modlogs['banned_from_community'].extend(processed)
