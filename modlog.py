@@ -95,9 +95,9 @@ def added_to_community(lemmy, live, c, available_communities, processed_modlogs,
 
     if pm_modlogs is True:
       if 'display_name' in user['modded_person']:
-        msg_to = user['modded_person']['display_name']
+        msg_to = log['modded_person']['display_name']
       else:
-        msg_to = user['modded_person']['name']
+        msg_to = log['modded_person']['name']
 
     if live:
       processed.append(log['mod_add_community']['id']) # mark modlog as processed
@@ -137,9 +137,9 @@ def banned_from_community(lemmy, live, c, available_communities, processed_modlo
     print(f"{log['mod_ban_from_community']['id']} {msg}")
     if pm_modlogs is True:
       if 'display_name' in user['banned_person']:
-        msg_to = user['banned_person']['display_name']
+        msg_to = log['banned_person']['display_name']
       else:
-        msg_to = user['banned_person']['name']
+        msg_to = log['banned_person']['name']
 
     if live:
       processed.append(log['mod_ban_from_community']['id']) # mark modlog as processed
