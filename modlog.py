@@ -112,7 +112,7 @@ def added_to_community(lemmy, live, c, available_communities, processed_modlogs,
   return(processed)
 
 
-def banned_from_communiy(lemmy, live, c, available_communities, processed_modlogs, room, muser, mpw, mserver, pm_modlogs):
+def banned_from_community(lemmy, live, c, available_communities, processed_modlogs, room, muser, mpw, mserver, pm_modlogs):
   ml = lemmy.modlog.get(community_id=c,type_=ModlogActionType.ModBanFromCommunity,limit=4)
   processed = []
   ppid = 0
