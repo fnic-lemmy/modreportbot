@@ -88,13 +88,15 @@ def added_to_community(lemmy, live, c, available_communities, processed_modlogs,
     if log['mod_add_community']['id'] in processed_modlogs:
       break # stop processing if we've already seen a log as they are in descending order
     if log['mod_add_community']['removed'] is not False:
-      continue # not interested in removed mods
+      action = "removed"
+    else:
+      action = "added"
 
-    msg = f"\"{log['modded_person']['name']}\" has been added as a mod for \"{log['community']['name']}\" by \"{log['moderator']['name']}\""
+    msg = f"\"{log['modded_person']['name']}\" has been {action} as a mod for \"{log['community']['name']}\" by \"{log['moderator']['name']}\""
     print(f"{log['mod_add_community']['id']} {msg}")
 
     if pm_modlogs is True:
-      if 'display_name' in user['modded_person']:
+      if 'display_name' in log['modded_person']:
         msg_to = log['modded_person']['display_name']
       else:
         msg_to = log['modded_person']['name']
@@ -106,7 +108,8 @@ def added_to_community(lemmy, live, c, available_communities, processed_modlogs,
         matrix.post(f'[modlog] {msg}', room, muser, mpw, mserver)
         # Send PM to the poster
         if pm_modlogs is True:
-          pm_msg = f"Dear {msg_to},\n\nYou have been added as a moderator for \"{log['community']['name']}\"."
+          if log['mod_add_community']['removed'] is not False: # don't tell user they've been unmodded
+            pm_msg = f"Dear {msg_to},\n\nYou have been {action} as a moderator for \"{log['community']['name']}\"."
           lemmy.private_message.create(recipient_id=log['modded_person']['id'],content=pm_msg)
 
   return(processed)
@@ -136,7 +139,7 @@ def banned_from_community(lemmy, live, c, available_communities, processed_modlo
     msg = f"\"{log['banned_person']['name']}\" has been banned from \"{log['community']['name']}\" until {expires} due to reason: {reason}"
     print(f"{log['mod_ban_from_community']['id']} {msg}")
     if pm_modlogs is True:
-      if 'display_name' in user['banned_person']:
+      if 'display_name' in log['banned_person']:
         msg_to = log['banned_person']['display_name']
       else:
         msg_to = log['banned_person']['name']
