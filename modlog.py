@@ -23,7 +23,7 @@ def removed_posts(lemmy, live, c, available_communities, processed_modlogs, room
       reason = log['mod_remove_post']['reason']
     else:
       reason = "(not specified)"
-    msg = f"\"{log['post']['name']}\" in \"{log['community']['name']}\" has been removed due to reason: {reason}"
+    msg = f"[{log['community']['name']}] Post \"{log['post']['name']}\" has been removed due to reason: {reason}"
     print(f"{log['mod_remove_post']['id']} {msg}")
 
     if pm_modlogs is True:
@@ -37,10 +37,10 @@ def removed_posts(lemmy, live, c, available_communities, processed_modlogs, room
       processed.append(log['mod_remove_post']['id']) # mark modlog as processed
       if c in available_communities: # only perform actions if we've seen the community before
         # Post to Matrix
-        matrix.post(f'[modlog] {msg}', room, muser, mpw, mserver)
+        matrix.post(f'Modlog: {msg}', room, muser, mpw, mserver)
         # Send PM to the poster
         if pm_modlogs is True:
-          pm_msg = f"Dear {msg_to},\n\nYour post {msg}\n\nIf you are able to correct this please feel free to re-post."
+          pm_msg = f"Dear {msg_to},\n\nYour post \"{log['post']['name']}\" in \"[{log['community']['name']}]({log['community']['actor_id']})\" has been removed due to reason: {reason}\n\nIf you are able to correct this please feel free to re-post."
           lemmy.private_message.create(recipient_id=log['post']['creator_id'],content=pm_msg)
 
   return(processed)
@@ -58,7 +58,7 @@ def removed_comments(lemmy, live, c, available_communities, processed_modlogs, r
       reason = log['mod_remove_comment']['reason']
     else:
       reason = "(not specified)"
-    msg = f"\"{log['comment']['content']}\" under post \"{log['post']['name']}\" ({log['post']['ap_id']}) in \"{log['community']['name']}\" has been removed due to reason: {reason}"
+    msg = f"\"[{log['community']['name']}] \"{log['comment']['content']}\" under post \"{log['post']['name']}\" ({log['post']['ap_id']}) has been removed due to reason: {reason}"
     print(f"{log['mod_remove_comment']['id']} {msg}")
     if pm_modlogs is True:
       user=lemmy.user.get(person_id=log['commenter']['id']) # look up user
@@ -71,10 +71,10 @@ def removed_comments(lemmy, live, c, available_communities, processed_modlogs, r
       processed.append(log['mod_remove_comment']['id']) # mark modlog as processed
       if c in available_communities: # only perform actions if we've seen the community before
         # Post to Matrix
-        matrix.post(f'[modlog] {msg}', room, muser, mpw, mserver)
+        matrix.post(f'Modlog: {msg}', room, muser, mpw, mserver)
         # Send PM to the poster
         if pm_modlogs is True:
-          pm_msg = f"Dear {msg_to},\n\nYour comment;\n```\n{log['comment']['content']}\n```\nunder the post \"{log['post']['name']}\" in \"{log['community']['name']}\" has been removed due to reason: {reason}"
+          pm_msg = f"Dear {msg_to},\n\nYour comment;\n```\n{log['comment']['content']}\n```\nunder the post \"[{log['post']['name']}]({log['post']['ap_id']})\" in \"[{log['community']['name']}]({log['community']['actor_id']})\" has been removed due to reason: {reason}"
           lemmy.private_message.create(recipient_id=log['post']['creator_id'],content=pm_msg)
 
   return(processed)
@@ -92,7 +92,7 @@ def added_to_community(lemmy, live, c, available_communities, processed_modlogs,
     else:
       action = "added"
 
-    msg = f"\"{log['modded_person']['name']}\" has been {action} as a mod for \"{log['community']['name']}\" by \"{log['moderator']['name']}\""
+    msg = f"[{log['community']['name']}] \"{log['modded_person']['name']}\" has been {action} as a mod by \"{log['moderator']['name']}\""
     print(f"{log['mod_add_community']['id']} {msg}")
 
     if pm_modlogs is True:
@@ -105,11 +105,11 @@ def added_to_community(lemmy, live, c, available_communities, processed_modlogs,
       processed.append(log['mod_add_community']['id']) # mark modlog as processed
       if c in available_communities: # only perform actions if we've seen the community before
         # Post to Matrix
-        matrix.post(f'[modlog] {msg}', room, muser, mpw, mserver)
+        matrix.post(f'Modlog: {msg}', room, muser, mpw, mserver)
         # Send PM to the poster
         if pm_modlogs is True:
           if log['mod_add_community']['removed'] is not False: # don't tell user they've been unmodded
-            pm_msg = f"Dear {msg_to},\n\nYou have been {action} as a moderator for \"{log['community']['name']}\"."
+            pm_msg = f"Dear {msg_to},\n\nYou have been {action} as a moderator for \"[{log['community']['name']}]({log['community']['actor_id']})\"."
           lemmy.private_message.create(recipient_id=log['modded_person']['id'],content=pm_msg)
 
   return(processed)
@@ -136,7 +136,7 @@ def banned_from_community(lemmy, live, c, available_communities, processed_modlo
     else:
       expires = "(not specified)"
 
-    msg = f"\"{log['banned_person']['name']}\" has been banned from \"{log['community']['name']}\" until {expires} due to reason: {reason}"
+    msg = f"[{log['community']['name']}] \"{log['banned_person']['name']}\" has been banned until {expires} due to reason: {reason}"
     print(f"{log['mod_ban_from_community']['id']} {msg}")
     if pm_modlogs is True:
       if 'display_name' in log['banned_person']:
@@ -148,10 +148,10 @@ def banned_from_community(lemmy, live, c, available_communities, processed_modlo
       processed.append(log['mod_ban_from_community']['id']) # mark modlog as processed
       if c in available_communities: # only perform actions if we've seen the community before
         # Post to Matrix
-        matrix.post(f'[modlog] {msg}', room, muser, mpw, mserver)
+        matrix.post(f'Modlog: {msg}', room, muser, mpw, mserver)
         # Send PM to the poster
         if pm_modlogs is True:
-          pm_msg = f"Dear {msg_to},\n\nYou have been banned from \"{log['community']['name']}\" until {expires} due to reason: {reason}"
+          pm_msg = f"Dear {msg_to},\n\nYou have been banned from \"[{log['community']['name']}]({log['community']['actor_id']})\" until {expires} due to reason: {reason}"
           lemmy.private_message.create(recipient_id=log['banned_person']['id'],content=pm_msg)
 
   return(processed)
