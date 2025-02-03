@@ -58,7 +58,7 @@ def removed_comments(lemmy, live, c, available_communities, processed_modlogs, r
       reason = log['mod_remove_comment']['reason']
     else:
       reason = "(not specified)"
-    msg = f"\"[{log['community']['name']}] \"{log['comment']['content']}\" under post \"{log['post']['name']}\" ({log['post']['ap_id']}) has been removed due to reason: {reason}"
+    msg = f"[{log['community']['name']}] \"{log['comment']['content']}\" under post \"{log['post']['name']}\" ({log['post']['ap_id']}) has been removed due to reason: {reason}"
     print(f"{log['mod_remove_comment']['id']} {msg}")
     if pm_modlogs is True:
       user=lemmy.user.get(person_id=log['commenter']['id']) # look up user
@@ -220,7 +220,7 @@ def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
         available_communities['removed_posts'].append(c)
         
         cm = lemmy.community.get(c)
-        matrix.post(f'Modlog: [{cm['community_view']['community']['name']}] User {l_user}@{l_inst} has been modded to {cm['community_view']['community']['actor_id']} - modlogs will now be collected.', room, muser, mpw, mserver)    
+        matrix.post(f"Modlog: [{cm['community_view']['community']['name']}] User {l_user}@{l_inst} has been modded to {cm['community_view']['community']['actor_id']} - modlogs will now be collected.", room, muser, mpw, mserver)
 
 
     # process removed comments
@@ -258,7 +258,7 @@ def run(lemmy, l_user, l_inst, live, room, muser, mpw, mserver, pm_modlogs):
 
     for rc in list(removed_communities):
       c = lemmy.community.get(rc)
-      matrix.post(f'Modlog: [{c['community_view']['community']['name']}] User {l_user}@{l_inst} has been removed from {c['community_view']['community']['actor_id']} - no more modlogs will be collected.', room, muser, mpw, mserver)
+      matrix.post(f"Modlog: [{c['community_view']['community']['name']}] User {l_user}@{l_inst} has been removed from {c['community_view']['community']['actor_id']} - no more modlogs will be collected.", room, muser, mpw, mserver)
 
     available_communities['removed_posts'] = commlist
     available_communities['removed_comments'] = commlist
