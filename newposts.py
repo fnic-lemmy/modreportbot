@@ -18,6 +18,8 @@ def run(lemmy, live, room, muser, mpw, mserver):
 
   for p in posts:
     if p["read"] is True:
+      if (p["post"]["featured_community"] is True) or (p["post"]["featured_local"] is True:
+        continue # skip past pinned posts
       break
 
     if live:
