@@ -6,8 +6,8 @@ from nio import AsyncClient, MatrixRoom, RoomMessageText
 import re
 
 def urlify2(value):
-    urlfinder = re.compile("(([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|((news|telnet|nttp|file|http|ftp|https)://)|(www|ftp)[-A-Za-z0-9]*\\.)[-A-Za-z0-9\\.]+(:[0-9]*)?/[-A-Za-z0-9_\\$\\.\\+\\!\\*\\(\\),;:@&=\\?/~\\#\\%]*[^]'\\.}>\\),\\\"])\s")
-    return urlfinder.sub(r'<a href="\1">[link]</a>', value)
+    urlfinder = re.compile("\[(.*)\]\((.*)\)")
+    return urlfinder.sub(r'<a href="\2">\1</a>', value)
 
 async def main(msg, room, user, pw, server) -> None:
     client = AsyncClient(f"https://{server}", user)
@@ -27,6 +27,7 @@ async def main(msg, room, user, pw, server) -> None:
         message_type="m.room.message",
         content={"msgtype": "m.notice",
           "body": msg,
+          "format": "org.matrix.custom.html",
           "formatted_body": fmsg
         }
     )
@@ -35,6 +36,4 @@ async def main(msg, room, user, pw, server) -> None:
 
 def post(msg, room, user, pw, server):
     asyncio.run(main(msg, room, user, pw, server))
-
-
 
