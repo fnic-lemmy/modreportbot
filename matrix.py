@@ -6,7 +6,7 @@ from nio import AsyncClient, MatrixRoom, RoomMessageText
 import re
 
 def urlify2(value):
-    urlfinder = re.compile("\[([^\]]+)\]\(([^)]+)\)")
+    urlfinder = re.compile("\[([^\]\[]+)\]\(([^)]+)\)")
     return urlfinder.sub(r'<a href="\2">\1</a>', value)
 
 async def main(msg, room, user, pw, server) -> None:
