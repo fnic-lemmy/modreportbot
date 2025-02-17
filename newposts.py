@@ -25,7 +25,7 @@ def run(lemmy, live, room, muser, mpw, mserver):
     if live:
       lemmyverselink = "https://lemmyverse.link/" + p['post']['ap_id'][8:]
       # post to matrix
-      mtxt = f"New: [{p['community']['name']}] {p['post']['name']}\n[[Direct]({p['post']['ap_id']})] [[Lemmyverse]({lemmyverselink})]"
+      mtxt = f"New: [**[{p['community']['name']}]({p['community']['ap_id']})**] {p['post']['name']}\n[[Direct]({p['post']['ap_id']})] [[Lemmyverse]({lemmyverselink})]"
       matrix.post(mtxt, room, muser, mpw, mserver)
 
       try:
