@@ -40,7 +40,7 @@ def removed_posts(lemmy, live, c, available_communities, processed_modlogs, room
         matrix.post(f'Modlog: {msg}', room, muser, mpw, mserver)
         # Send PM to the poster
         if pm_modlogs is True:
-          pm_msg = f"Dear {msg_to},\n\nYour post \"{log['post']['name']}\" in \"[{log['community']['name']}]({log['community']['actor_id']})\" has been removed due to reason: {reason}\n\nIf you are able to correct this please feel free to re-post."
+          pm_msg = f"Dear {msg_to},\n\nYour post \"{log['post']['name']}\" on {log['post']['published']} in \"[{log['community']['name']}]({log['community']['actor_id']})\" has been removed due to reason: {reason}\n\nIf you are able to correct this please feel free to re-post."
           lemmy.private_message.create(recipient_id=log['post']['creator_id'],content=pm_msg)
 
   return(processed)
