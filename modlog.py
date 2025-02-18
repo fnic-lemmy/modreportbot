@@ -23,7 +23,7 @@ def removed_posts(lemmy, live, c, available_communities, processed_modlogs, room
       reason = log['mod_remove_post']['reason']
     else:
       reason = "(not specified)"
-    msg = f"[{log['community']['name']}] Post \"{log['post']['name']}\" has been removed due to reason: {reason}"
+    msg = f"[**{log['community']['name']}({log['community']['actor_id']})**] Post \"**[{log['post']['name']}]({log['post']['ap_id']})**\" [[Lemmyverse](https://lemmyverse.link/{log['post']['ap_id']})] has been removed due to reason: {reason}"
     print(f"{log['mod_remove_post']['id']} {msg}")
 
     if pm_modlogs is True:
@@ -58,7 +58,7 @@ def removed_comments(lemmy, live, c, available_communities, processed_modlogs, r
       reason = log['mod_remove_comment']['reason']
     else:
       reason = "(not specified)"
-    msg = f"[{log['community']['name']}] \"{log['comment']['content']}\" under post \"{log['post']['name']}\" ({log['post']['ap_id']}) has been removed due to reason: {reason}"
+    msg = f"[**{log['community']['name']}({log['community']['actor_id']})**] \"{log['comment']['content']}\" under post \"**[{log['post']['name']}]({log['post']['ap_id']})**\" [[Lemmyverse](https://lemmyverse.link/{log['post']['ap_id']})] has been removed due to reason: {reason}"
     print(f"{log['mod_remove_comment']['id']} {msg}")
     if pm_modlogs is True:
       user=lemmy.user.get(person_id=log['commenter']['id']) # look up user
@@ -92,7 +92,7 @@ def added_to_community(lemmy, live, c, available_communities, processed_modlogs,
     else:
       action = "added"
 
-    msg = f"[{log['community']['name']}] \"{log['modded_person']['name']}\" has been {action} as a mod by \"{log['moderator']['name']}\""
+    msg = f"[**{log['community']['name']}({log['community']['actor_id']})**] \"**[{log['modded_person']['name']}]({log['modded_person']['actor_id']})**\" has been {action} as a mod by \"{log['moderator']['name']}\""
     print(f"{log['mod_add_community']['id']} {msg}")
 
     if pm_modlogs is True:
@@ -136,7 +136,7 @@ def banned_from_community(lemmy, live, c, available_communities, processed_modlo
     else:
       expires = "(not specified)"
 
-    msg = f"[{log['community']['name']}] \"{log['banned_person']['name']}\" has been banned until {expires} due to reason: {reason}"
+    msg = f"[**{log['community']['name']}({log['community']['actor_id']})**] \"**[{log['banned_person']['name']}](log['banned_person']['actor_id'])**\" has been banned until {expires} due to reason: {reason}"
     print(f"{log['mod_ban_from_community']['id']} {msg}")
     if pm_modlogs is True:
       if 'display_name' in log['banned_person']:

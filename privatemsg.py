@@ -42,7 +42,7 @@ def run(lemmy, live, room, muser, mpw, mserver):
     else:
       dm_to_addr = p['recipient']['actor_id']
 
-    rtxt = f"From: {dm_from} <{dm_from_addr}>\nTo: {dm_to} <{dm_to_addr}>\n{p['private_message']['content']}\n"
+    rtxt = f"DM: [{dm_to}] From: {dm_from} <{dm_from_addr}>\nTo: {dm_to} <{dm_to_addr}>\n{p['private_message']['content']}\n"
     print(rtxt)
 
     if live:

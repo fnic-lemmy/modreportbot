@@ -67,9 +67,8 @@ def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, np, ml, 
         continue
 
       #print(report)
-      rtxt = f'Report: {report["post_report"]["reason"]}\n'
-      rtxt += f'Community: {report["community"]["name"]}\n'
-      rtxt += f'Post: {report["post"]["ap_id"]} {report["post"]["name"]}\n'
+      rtxt = f'Report: [**[{report["community"]["name"]}]({report["community"]["actor_id"]})**] {report["post_report"]["reason"]}\n'
+      rtxt += f'Post: **[{report["post"]["name"]}]({report["post"]["ap_id"]})**\n'
       rtxt += f'Comments: {report["counts"]["comments"]} 👍{report["counts"]["upvotes"]} 👎{report["counts"]["downvotes"]}\n'
 
       print(rtxt)
@@ -91,9 +90,8 @@ def run(user, pw, instance, room, muser, mpw, mserver, dv, pm, reports, np, ml, 
         print(f'id {report["comment_report"]["id"]} already posted')
         continue
 
-      rtxt = f'Report: {report["comment_report"]["reason"]}\n'
-      rtxt += f'Community: {report["community"]["name"]}\n'
-      rtxt += f'Comment: {report["comment"]["content"]}\n'
+      rtxt = f'Report: [**[{report["community"]["name"]}]({report["community"]["actor_id"]})**] {report["comment_report"]["reason"]}\n'
+      rtxt += f'Comment: **[{report["comment"]["content"]}]({report["comment"]["ap_id"]})**\n'
       rtxt += f'Replies: {report["counts"]["child_count"]} 👍{report["counts"]["upvotes"]} 👎{report["counts"]["downvotes"]}\n'
 
       print(rtxt)
