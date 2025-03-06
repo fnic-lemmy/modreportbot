@@ -15,7 +15,6 @@ gc_deploy() {
 
 gc_deploy "lemmings-world" "lemmings.world"
 gc_deploy "dbzer0" "lemmy.dbzer0.com"
-gc_deploy "lemm-ee" "lemm.ee"
 gc_deploy "lemmy-world" "lemmy.world"
 gc_deploy "shitjustworks" "sh.itjust.works"
 gc_deploy "test" "voyager.lemmy.ml"
