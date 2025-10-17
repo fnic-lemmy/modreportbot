@@ -7,7 +7,7 @@ flag_pm="TRUE"
 flag_reports="TRUE"
 notify_new="FALSE"
 get_modlog="TRUE"
-modlog_pm="TRUE"
+modlog_pm="FALSE"
 
 gc_deploy() {
   gcloud run jobs deploy modreportbot-$1 --project=$project --region=$region --source . --set-env-vars=LEMMY_USER="fnicmodbot",LEMMY_INSTANCE="$2",MATRIX_USER="@fnic_reports:matrix.org",MATRIX_SERVER="matrix.org",MATRIX_ROOM="$matrix_room",FLAG_DOWNVOTES="$flag_dv",GET_MESSAGES="$flag_pm",GET_REPORTS="$flag_reports",NOTIFY_NEW="$notify_new",GET_MODLOG="$get_modlog",MODLOG_PM="$modlog_pm" --set-secrets="LEMMY_PW=fnicmodbot-$1:latest","MATRIX_PW=fnicreports:latest" &
